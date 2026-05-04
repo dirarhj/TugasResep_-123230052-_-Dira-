@@ -3,15 +3,9 @@ import 'pages/login_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  // Wajib ditambahin kalau main() pakai async
   WidgetsFlutterBinding.ensureInitialized(); 
-  
-  // Inisialisasi Hive
   await Hive.initFlutter();
-  
-  // Buka "Box" (kayak tabel di database) buat nyimpen favorit
   await Hive.openBox('favorites'); 
-
   runApp(const MyApp());
 }
 
@@ -21,9 +15,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'ResepKu',
       theme: ThemeData(
-        primarySwatch: Colors.orange, // Sesuaiin sama UI di soal
+        primarySwatch: Colors.orange, 
       ),
       home: const LoginPage(),
     );

@@ -11,11 +11,10 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController(); // Tambahan buat konfirmasi[cite: 1]
+  final _confirmPasswordController = TextEditingController(); 
   bool _isLoading = false;
 
   void _handleRegister() async {
-    // Validasi input ga boleh kosong
     if (_usernameController.text.isEmpty || 
         _passwordController.text.isEmpty || 
         _confirmPasswordController.text.isEmpty) {
@@ -25,7 +24,6 @@ class _RegisterPageState extends State<RegisterPage> {
       return;
     }
 
-    // Validasi password match[cite: 1]
     if (_passwordController.text != _confirmPasswordController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Password dan Konfirmasi Password nggak match!')),
@@ -35,7 +33,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
     setState(() => _isLoading = true);
     
-    // Panggil fungsi register dari AuthService[cite: 1]
     bool isSuccess = await AuthService.register(
       _usernameController.text, 
       _passwordController.text,
@@ -48,7 +45,6 @@ class _RegisterPageState extends State<RegisterPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Register Berhasil! Silakan Login.')),
       );
-      // Balik ke halaman login
       Navigator.pop(context);
     }
   }
@@ -61,7 +57,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Colors.orange,
       ),
       body: SafeArea(
-        child: SingleChildScrollView( // Biar ga overflow pas keyboard muncul
+        child: SingleChildScrollView( 
           padding: const EdgeInsets.all(24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: _confirmPasswordController,
                 obscureText: true,
                 decoration: const InputDecoration(
-                  labelText: 'Konfirmasi Password', // Field wajib sesuai instruksi[cite: 1]
+                  labelText: 'Konfirmasi Password', 
                   prefixIcon: Icon(Icons.lock_reset),
                   border: OutlineInputBorder(),
                 ),

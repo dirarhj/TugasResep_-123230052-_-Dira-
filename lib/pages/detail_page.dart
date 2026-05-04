@@ -5,7 +5,6 @@ import '../services/api_service.dart';
 class DetailPage extends StatefulWidget {
   final String idMeal;
 
-  // Menerima passing idMeal dari Home Page[cite: 1]
   const DetailPage({super.key, required this.idMeal});
 
   @override
@@ -20,13 +19,11 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    // Selalu fetch ulang data detail resep tiap page dibuka[cite: 1]
     futureMealDetail = ApiService.fetchMealDetail(widget.idMeal);
     _checkFavorite();
   }
 
   void _checkFavorite() {
-    // Cek apakah id resep ini udah ada di Hive
     setState(() {
       _isFavorite = _favoriteBox.containsKey(widget.idMeal);
     });
@@ -35,14 +32,12 @@ class _DetailPageState extends State<DetailPage> {
   void _toggleFavorite(Map<String, dynamic> mealData) {
     setState(() {
       if (_isFavorite) {
-        // Hapus dari favorit jika udah ada[cite: 1]
         _favoriteBox.delete(widget.idMeal);
         _isFavorite = false;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Dihapus dari Favorit')),
         );
       } else {
-        // Simpan ke favorit, kita simpan Map datanya biar gampang ditampilin nanti
         _favoriteBox.put(widget.idMeal, {
           'idMeal': mealData['idMeal'],
           'strMeal': mealData['strMeal'],
@@ -56,14 +51,12 @@ class _DetailPageState extends State<DetailPage> {
     });
   }
 
-  // Helper buat ngegabungin Ingredient + Measure yang dipisah di API
   List<String> _getIngredients(Map<String, dynamic> data) {
     List<String> ingredients = [];
     for (int i = 1; i <= 20; i++) {
       String? ingredient = data['strIngredient$i'];
       String? measure = data['strMeasure$i'];
       
-      // Kalau datanya nggak kosong, masukin ke list
       if (ingredient != null && ingredient.trim().isNotEmpty) {
         ingredients.add('${measure ?? ''} $ingredient'.trim());
       }
@@ -96,7 +89,6 @@ class _DetailPageState extends State<DetailPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Menampilkan Foto Resep[cite: 1]
                 Image.network(
                   meal['strMealThumb'],
                   height: 250,
@@ -107,13 +99,11 @@ class _DetailPageState extends State<DetailPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Menampilkan Nama Resep[cite: 1]
                       Text(
                         meal['strMeal'],
                         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      // Menampilkan Kategori dan Asal Negara[cite: 1]
                       Row(
                         children: [
                           Chip(label: Text(meal['strCategory'] ?? 'N/A')),
@@ -123,7 +113,6 @@ class _DetailPageState extends State<DetailPage> {
                       ),
                       const SizedBox(height: 16),
                       
-                      // Tombol Add/Remove Favorite, tampilan berubah sesuai state[cite: 1]
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
@@ -143,7 +132,6 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(height: 24),
                       const Text('Bahan-bahan', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
-                      // Menampilkan Daftar Bahan[cite: 1]
                       ...ingredients.map((item) => Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4.0),
                         child: Row(
@@ -158,7 +146,6 @@ class _DetailPageState extends State<DetailPage> {
                       const SizedBox(height: 24),
                       const Text('Cara Memasak', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
-                      // Menampilkan Instruksi Memasak[cite: 1]
                       Text(meal['strInstructions'] ?? 'Instruksi tidak tersedia.', style: const TextStyle(height: 1.5)),
                     ],
                   ),

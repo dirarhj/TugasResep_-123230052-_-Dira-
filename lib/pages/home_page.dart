@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Panggil API pas halaman pertama kali di-load
     futureMeals = ApiService.fetchMeals();
   }
 
@@ -28,13 +27,11 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _selectedIndex = index;
     });
-    // Nanti kita tambahin logic buat pindah ke Favorite Page di sini
   }
 
   void _handleLogout() async {
-    await AuthService.logout(); // Hapus sesi dari SharedPreferences[cite: 1]
+    await AuthService.logout();
     if (!mounted) return;
-    // Balik ke login page dan hapus semua history route sebelumnya[cite: 1]
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginPage()),
@@ -51,15 +48,12 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: _handleLogout, // Tombol logout wajib ada di AppBar[cite: 1]
+            onPressed: _handleLogout, 
           ),
         ],
       ),
-      // Tampilan konten berubah tergantung tab yang dipilih
-      // Tampilan konten berubah tergantung tab yang dipilih
       body: _selectedIndex == 0 ? _buildHomeContent() : const FavoritePage(),
       
-      // Bottom Navigation Bar minimal 2 tab[cite: 1]
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -82,7 +76,6 @@ class _HomePageState extends State<HomePage> {
     return FutureBuilder<List<Meal>>(
       future: futureMeals,
       builder: (context, snapshot) {
-        // Tampilkan indikator loading saat fetching data[cite: 1]
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(color: Colors.orange));
         } else if (snapshot.hasError) {
@@ -93,12 +86,11 @@ class _HomePageState extends State<HomePage> {
 
         final meals = snapshot.data!;
 
-        // Gunakan GridView untuk daftar resep[cite: 1]
         return GridView.builder(
           padding: const EdgeInsets.all(8),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 2 kolom
-            childAspectRatio: 0.8, // Biar card-nya agak tinggi
+            crossAxisCount: 2, 
+            childAspectRatio: 0.8,
             crossAxisSpacing: 8,
             mainAxisSpacing: 8,
           ),
@@ -119,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                       child: ClipRRect(
                         borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                         child: Image.network(
-                          meal.strMealThumb, // Menampilkan gambar[cite: 1]
+                          meal.strMealThumb,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -127,7 +119,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        meal.strMeal, // Menampilkan nama resep[cite: 1]
+                        meal.strMeal, 
                         style: const TextStyle(fontWeight: FontWeight.bold),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,

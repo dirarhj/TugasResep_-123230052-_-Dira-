@@ -7,7 +7,6 @@ class FavoritePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Panggil box yang udah kita open di main.dart
     final favoriteBox = Hive.box('favorites');
 
     return ValueListenableBuilder(
@@ -17,7 +16,6 @@ class FavoritePage extends StatelessWidget {
           return const Center(child: Text('Belum ada resep favorit nih.'));
         }
 
-        // Ambil semua value dari Hive dan ubah jadi list
         final favorites = box.values.toList();
 
         return GridView.builder(
@@ -34,7 +32,6 @@ class FavoritePage extends StatelessWidget {
             
             return GestureDetector(
               onTap: () {
-                // Kalo diklik, passing idMeal ke Detail Page
                 Navigator.push(
                   context, 
                   MaterialPageRoute(builder: (context) => DetailPage(idMeal: meal['idMeal']))
@@ -43,7 +40,7 @@ class FavoritePage extends StatelessWidget {
               child: Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                child: Stack( // Pakai Stack biar tombol X (hapus) bisa numpuk di atas gambar
+                child: Stack( 
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -69,13 +66,12 @@ class FavoritePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Tombol hapus dari favorit di pojok kanan atas
                     Positioned(
                       top: 4,
                       right: 4,
                       child: GestureDetector(
                         onTap: () {
-                          box.delete(meal['idMeal']); // Hapus data dari Hive[cite: 1]
+                          box.delete(meal['idMeal']); 
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Dihapus dari Favorit')),
                           );
