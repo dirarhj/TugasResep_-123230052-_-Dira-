@@ -52,7 +52,10 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.restaurant_menu, size: 64, color: Colors.orange),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: const Icon(Icons.restaurant_menu, size: 64, color: Colors.orange),
+              ),
               const SizedBox(height: 24),
               const Text(
                 'Selamat Datang!',
